@@ -1,3 +1,9 @@
+package family_tree;
+
+import family_tree.human.Gender;
+import family_tree.tree.FamilyTree;
+import family_tree.human.Human;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +22,8 @@ public class Main {
                 System.out.println(name + " не имеет детей.");
             } else {
                 System.out.println("Дети " + name + ":");
+                children = familyTree.sortByBirthDate(children);
+                //или children = familyTree.sortByName(children);
                 for (Human child : children) {
                     System.out.println("Имя: " + child.getName() + ", Дата рождения: " + child.getBirthDate() + ", Пол: " + child.getGender());
                 }
@@ -40,9 +48,9 @@ public class Main {
         familyTree.addHuman(human4);
         familyTree.addHuman(human5);
 
-        Human child1 = new Human("Никита", "01-01-2010", Gender.Мужской);
+        Human child1 = new Human("Никита", "01-01-2015", Gender.Мужской);
         Human child2 = new Human("Кристина", "01-01-2012", Gender.Женский);
-        Human child3 = new Human("Петр", "01-01-2015", Gender.Мужской);
+        Human child3 = new Human("Петр", "01-01-2010", Gender.Мужской);
         Human child4 = new Human("София", "01-01-2017", Gender.Женский);
         Human child5 = new Human("Яков", "01-01-2019", Gender.Мужской);
         Human child6 = new Human("Милана", "01-01-2020", Gender.Женский);
@@ -56,9 +64,8 @@ public class Main {
         human2.addChild(child6);
         human3.addChild(child7);
 
-        familyTree.saveToFile("familyTree.ser");
+        familyTree.saveToFile("family_tree/utils/familyTree.ser");
 
-        return FamilyTree.loadFromFile("familyTree.ser");
+        return FamilyTree.loadFromFile("family_tree/utils/familyTree.ser");
     }
 }
-

@@ -1,10 +1,12 @@
+package family_tree.human;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.io.Serializable;
 
-class Human implements Serializable {
+public class Human implements Serializable {
     private String name;
     private LocalDate birthDate;
     private Gender gender;
@@ -39,9 +41,4 @@ class Human implements Serializable {
     public Gender getGender() {
         return gender;
     }
-}
-
-enum Gender {
-    Мужской,
-    Женский
 }

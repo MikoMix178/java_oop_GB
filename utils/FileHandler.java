@@ -1,6 +1,8 @@
+package family_tree.utils;
+
 import java.io.*;
 
-public class FileHandler implements Serializable {
+public class FileHandler implements FileHandlerInterface {
 
     public void writeToFile(String filename, Serializable object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
@@ -20,9 +22,3 @@ public class FileHandler implements Serializable {
         return object;
     }
 }
-
-
-
-
-
-

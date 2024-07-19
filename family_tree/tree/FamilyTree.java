@@ -1,6 +1,5 @@
 package family_tree.tree;
 
-import family_tree.human.Human;
 import family_tree.utils.FileHandler;
 import family_tree.utils.FileHandlerInterface;
 
@@ -11,23 +10,40 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class FamilyTree implements Serializable, Iterable<Human>, IterableInterface {
-    private List<Human> humans;
+public class FamilyTree<T extends Node<T>> implements Serializable, Iterable<T>, IterableInterface<T> {
+    private List<T> members;
     private transient FileHandlerInterface fileHandler;
 
     public FamilyTree() {
-        humans = new ArrayList<>();
+        members = new ArrayList<>();
         fileHandler = new FileHandler();
     }
 
-    public void addHuman(Human human) {
-        humans.add(human);
+    public void addMember (T member) {
+        members.add(member);
     }
 
-    public Human findHuman(String name) {
-        for (Human human : humans) {
-            if (human.getName().equals(name)) {
-                return human;
+    public T findMember(String name) {
+    for (T member : members) {
+        if (member.getName().equalsIgnoreCase(name)) {
+            return member;
+        }
+        T foundChild = findMemberRecursive(member, name);
+        if (foundChild != null) {
+            return foundChild;
+        }
+    }
+    return null;
+}
+
+    private T findMemberRecursive(T member, String name) {
+        for (T child : member.getChildren()) {
+            if (child.getName().equalsIgnoreCase(name)) {
+                return child;
+            }
+            T foundGrandChild = findMemberRecursive(child, name);
+            if (foundGrandChild != null) {
+                    return foundGrandChild;
             }
         }
         return null;
@@ -37,25 +53,25 @@ public class FamilyTree implements Serializable, Iterable<Human>, IterableInterf
         fileHandler.writeToFile(filename, this);
     }
 
-    public static FamilyTree loadFromFile(String filename) {
+     public static <T extends Node<T>> FamilyTree<T> loadFromFile(String filename) {
         FileHandler fileHandler = new FileHandler();
-        return (FamilyTree) fileHandler.readFromFile(filename);
+        return (FamilyTree<T>) fileHandler.readFromFile(filename);
     }
-
-    //@Override
-    //public List<Human> sortByName(List<Human> humans) {
-        //Collections.sort(humans, Comparator.comparing(Human::getName));
-        //return humans;
-    //}
 
     @Override
-    public List<Human> sortByBirthDate(List<Human> humans) {
-        Collections.sort(humans, Comparator.comparing(Human::getBirthDate));
-        return humans;
+    public List<T> sortByName(List<T> members) {
+        Collections.sort(members, Comparator.comparing(T::getName));
+        return members;
     }
 
-     @Override
-    public Iterator<Human> iterator() {
-        return humans.iterator();
+    @Override
+    public List<T> sortByBirthDate(List<T> members) {
+        Collections.sort(members, Comparator.comparing(T::getBirthDate));
+        return members;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return members.iterator();
     }
 }

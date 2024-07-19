@@ -1,29 +1,30 @@
 package family_tree.human;
 
+import family_tree.tree.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.io.Serializable;
 
-public class Human implements Serializable {
+public class Human implements Node<Human>, Serializable {
     private String name;
     private LocalDate birthDate;
     private Gender gender;
     private List<Human> children;
-    private List<Human> parents;
+    private Human parent;
 
     public Human(String name, String birthDate, Gender gender) {
         this.name = name;
         this.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         this.gender = gender;
         this.children = new ArrayList<>();
-        this.parents = new ArrayList<>();
     }
 
     public void addChild(Human child) {
         children.add(child);
-        child.parents.add(this);
+        child.setParent(this);
     }
 
     public List<Human> getChildren() {
@@ -41,4 +42,22 @@ public class Human implements Serializable {
     public Gender getGender() {
         return gender;
     }
+
+    public Human getParent() {
+        return parent;
+    }
+
+    public void setParent(Human parent) {
+        this.parent = parent;
+    }
+
+    public List<Human> getSiblings() {
+        if (parent == null) {
+            return new ArrayList<>();
+        }
+        List<Human> siblings = new ArrayList<>(parent.getChildren());
+        siblings.remove(this);
+        return siblings;
+    }
+
 }

@@ -1,15 +1,18 @@
 package family_tree;
 
-import family_tree.human.Gender;
-import family_tree.tree.FamilyTree;
-import family_tree.human.Human;
-import family_tree.utils.UserInterface;
+import family_tree.model.human.Gender;
+import family_tree.model.tree.FamilyTree;
+import family_tree.model.human.Human;
+import family_tree.presenter.FamilyTreePresenter;
+import family_tree.view.UserInterface;
 
 public class Main {
     public static void main(String[] args) {
         FamilyTree<Human> familyTree = createFamilyTree();
-        UserInterface ui = new UserInterface(familyTree);
-        ui.start();
+        UserInterface view = new UserInterface(familyTree);
+        FamilyTreePresenter presenter = new FamilyTreePresenter(familyTree, view);
+        view.setPresenter(presenter);
+        view.start();
     }
 
     private static FamilyTree<Human> createFamilyTree() {
@@ -43,8 +46,8 @@ public class Main {
         human2.addChild(child6);
         human3.addChild(child7);
 
-        familyTree.saveToFile("family_tree/utils/familyTree.ser");
+        familyTree.saveToFile("family_tree/model/utils/familyTree.ser");
 
-        return FamilyTree.loadFromFile("family_tree/utils/familyTree.ser");
+        return FamilyTree.loadFromFile("family_tree/model/utils/familyTree.ser");
     }
 }

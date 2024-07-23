@@ -1,7 +1,7 @@
-package family_tree.tree;
+package family_tree.model.tree;
 
-import family_tree.utils.FileHandler;
-import family_tree.utils.FileHandlerInterface;
+import family_tree.model.utils.FileHandler;
+import family_tree.model.utils.FileHandlerInterface;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package family_tree.tree;
+package family_tree.model.tree;
 
-import family_tree.human.Gender;
+import family_tree.model.human.Gender;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package family_tree.utils;
+package family_tree.model.utils;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
-package family_tree.human;
+package family_tree.model.human;
 
-import family_tree.tree.Node;
+import family_tree.model.tree.Node;
 
 import java.util.ArrayList;
 import java.util.List;

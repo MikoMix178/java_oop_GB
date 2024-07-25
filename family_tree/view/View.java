@@ -1,9 +1,9 @@
 package family_tree.view;
 
 import family_tree.model.human.Human;
-
 import java.util.List;
 
+// Интерфейс для представления
 public interface View {
     void displayHuman(Human human);
     void displayError(String message);

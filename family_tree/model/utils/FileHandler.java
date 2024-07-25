@@ -2,8 +2,10 @@ package family_tree.model.utils;
 
 import java.io.*;
 
+// Реализация интерфейса FileHandlerInterface
 public class FileHandler implements FileHandlerInterface {
 
+    // Метод для записи объекта в файл
     public void writeToFile(String filename, Serializable object) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(object);
@@ -12,6 +14,7 @@ public class FileHandler implements FileHandlerInterface {
         }
     }
 
+    // Метод для чтения объекта из файла
     public Object readFromFile(String filename) {
         Object object = null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {

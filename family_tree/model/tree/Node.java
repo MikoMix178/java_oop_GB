@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.time.LocalDate;
 
+// Интерфейс для узла дерева
 public interface Node<T> extends Serializable {
     String getName();
     void addChild(T human);

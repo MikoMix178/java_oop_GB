@@ -1,27 +1,23 @@
 package family_tree.presenter;
 
-import family_tree.model.tree.FamilyTree;
-import family_tree.model.human.Human;
+import family_tree.model.Service.Service;
 import family_tree.view.UserInterface;
-
+import family_tree.model.human.Human;
 import java.util.List;
-import java.util.Scanner;
 
+// Презентер, связывающий сервис и представление
 public class FamilyTreePresenter {
-    private FamilyTree<Human> familyTree;
+    private Service service;
     private UserInterface view;
-    private Scanner scanner;
 
-    public FamilyTreePresenter(FamilyTree<Human> familyTree, UserInterface view) {
-        this.familyTree = familyTree;
+    public FamilyTreePresenter(Service service, UserInterface view) {
+        this.service = service;
         this.view = view;
-        this.scanner = new Scanner(System.in);
     }
 
-    public void findHumanByName() {
-        System.out.print("Введите имя человека: ");
-        String name = scanner.nextLine();
-        Human human = familyTree.findMember(name);
+    // Поиск человека по имени
+    public void findHumanByName(String name) {
+        Human human = service.findMember(name);
         if (human != null) {
             view.displayHuman(human);
         } else {
@@ -29,12 +25,11 @@ public class FamilyTreePresenter {
         }
     }
 
-    public void findChildrenByName() {
-        System.out.print("Введите имя родителя: ");
-        String name = scanner.nextLine();
-        Human parent = familyTree.findMember(name);
+    // Поиск детей по имени родителя
+    public void findChildrenByName(String name) {
+        Human parent = service.findMember(name);
         if (parent != null) {
-            List<Human> children = parent.getChildren();
+            List<Human> children = service.findChildren(parent);
             if (children.isEmpty()) {
                 view.displayError("Детей нет");
             } else {
@@ -45,12 +40,11 @@ public class FamilyTreePresenter {
         }
     }
 
-    public void findParentByName() {
-        System.out.print("Введите имя ребенка: ");
-        String name = scanner.nextLine();
-        Human child = familyTree.findMember(name);
+    // Поиск родителя по имени ребенка
+    public void findParentByName(String name) {
+        Human child = service.findMember(name);
         if (child != null) {
-            Human parent = child.getParent();
+            Human parent = service.findParent(child);
             if (parent != null) {
                 view.displayParent(parent);
             } else {
@@ -61,12 +55,11 @@ public class FamilyTreePresenter {
         }
     }
 
-    public void findSiblingsByName() {
-        System.out.print("Введите имя ребенка: ");
-        String name = scanner.nextLine();
-        Human child = familyTree.findMember(name);
+    // Поиск братьев/сестер по имени ребенка
+    public void findSiblingsByName(String name) {
+        Human child = service.findMember(name);
         if (child != null) {
-            List<Human> siblings = child.getSiblings();
+            List<Human> siblings = service.findSiblings(child);
             if (siblings.isEmpty()) {
                 view.displayError("У ребенка нет братьев и сестер. ");
             } else {

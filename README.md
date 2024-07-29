@@ -42,3 +42,4 @@ IterableInterface - определяет отдельные методы для 
 ### DIP (принцип инверсии зависимостей):
 FamilyTreeService, FamilyTreePresenter, FamilyTree не зависят от конкретных реализаций, а используют абстракции (Node, IterableInterface, FileHandlerInterface).
 
+Задание 7: Добавить методы: добавление нового человека, установка родственных связей, сохранение и загрузка.

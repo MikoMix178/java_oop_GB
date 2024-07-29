@@ -15,4 +15,5 @@ public interface Node<T> extends Serializable {
     Gender getGender();
     T getParent();
     List<T> getSiblings();
+    void setParent(T relative);
 }

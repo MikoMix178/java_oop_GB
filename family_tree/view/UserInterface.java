@@ -1,6 +1,8 @@
 package family_tree.view;
 
+import family_tree.model.human.Gender;
 import family_tree.model.tree.FamilyTree;
+import family_tree.model.tree.RelationshipType;
 import family_tree.presenter.FamilyTreePresenter;
 import family_tree.model.human.Human;
 
@@ -29,7 +31,10 @@ public class UserInterface implements View {
         System.out.println("2. Вывести детей по имени родителя");
         System.out.println("3. Вывести родителя по имени ребенка");
         System.out.println("4. Вывести братьев и сестер по имени ребенка");
-        System.out.println("5. Выход");
+        System.out.println("5. Добавить нового человека");
+        System.out.println("6. Вывести семейное древо");
+        System.out.println("7. Добавить родственную связь");
+        System.out.println("8. Выход");
 
         // Получение команды от пользователя
         int command = scanner.nextInt();
@@ -58,6 +63,38 @@ public class UserInterface implements View {
                 presenter.findSiblingsByName(name);
                 break;
             case 5:
+                System.out.print("Введите имя нового человека: ");
+                String newName = scanner.nextLine();
+                System.out.print("Введите дату рождения (ДД-ММ-ГГГГ): ");
+                String birthDate = scanner.nextLine();
+                System.out.print("Введите пол (Мужской/Женский): ");
+                String genderStr = scanner.nextLine();
+                Gender gender;
+                if (genderStr.equalsIgnoreCase("Мужской")) {
+                    gender = Gender.Мужской;
+                } else if (genderStr.equalsIgnoreCase("Женский")) {
+                    gender = Gender.Женский;
+                } else {
+                    System.out.println("Неверный формат ввода пола. Используйте Мужской или Женский.");
+                    return;
+                }
+                Human newHuman = new Human(newName, birthDate, gender);
+                presenter.addNewHuman(newHuman);
+                break;
+            case 6:
+                presenter.displayFamilyTree();
+                break;
+            case 7:
+                System.out.print("Введите имя человека: ");
+                String personName = scanner.nextLine();
+                System.out.print("Выберите тип связи (PARENT/CHILD): ");
+                String typeStr = scanner.nextLine();
+                RelationshipType type = typeStr.equalsIgnoreCase("PARENT") ? RelationshipType.PARENT : RelationshipType.CHILD;
+                System.out.print("Введите имя родителя/ребенка: ");
+                String relativeName = scanner.nextLine();
+                presenter.addRelationship(personName, relativeName, type);
+                break;
+            case 8:
                 System.out.println("До свидания! ");
                 return;
             default:
@@ -103,5 +140,33 @@ public class UserInterface implements View {
         for (Human sibling : siblings) {
             System.out.println(sibling.getName() + ", Дата рождения: " + sibling.getBirthDate() + ", Пол: " + sibling.getGender());
         }
+    }
+
+    // Вывод информации о добавленном человеке
+    @Override
+    public void displayNewHuman(Human newHuman) { // New method
+        System.out.println("Новый человек добавлен: " + newHuman.getName() + ", Дата рождения: " + newHuman.getBirthDate() + ", Пол: " + newHuman.getGender());
+    }
+
+    // Вывод всего древа
+    @Override
+    public void displayFamilyTree(FamilyTree<Human> familyTree) {
+        System.out.println("Генеалогическое древо:");
+        for (Human human : familyTree) {
+            System.out.println(human.getName() + " (" + human.getBirthDate() + ") - " + human.getGender());
+            if (!human.getChildren().isEmpty()) {
+                System.out.print("Дети: ");
+                for (Human child : human.getChildren()) {
+                    System.out.print(child.getName() + " (" + child.getBirthDate() + ") - " + child.getGender() + "; ");
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    // Вывод сообщение об успехе
+    @Override
+    public void displaySuccess(String message) {
+        System.out.println("Успешно: " + message);
     }
 }

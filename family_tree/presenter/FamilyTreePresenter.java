@@ -1,6 +1,8 @@
 package family_tree.presenter;
 
 import family_tree.model.Service.Service;
+import family_tree.model.tree.FamilyTree;
+import family_tree.model.tree.RelationshipType;
 import family_tree.view.UserInterface;
 import family_tree.model.human.Human;
 import java.util.List;
@@ -67,6 +69,33 @@ public class FamilyTreePresenter {
             }
         } else {
             view.displayError("Ребенок не найден в генеалогическом древе. ");
+        }
+    }
+
+    // Добавление нового человека в древо
+     public void addNewHuman(Human newHuman) { // New method
+        service.addMember(newHuman);
+        service.familyTree = service.getFamilyTree();
+        service.saveToFile("family_tree/model/utils/familyTree.ser");
+        view.displayNewHuman(newHuman);
+    }
+
+    // Вывод древа
+    public void displayFamilyTree() {
+        FamilyTree<Human> familyTree = service.getFamilyTree();
+        view.displayFamilyTree(familyTree);
+    }
+
+    // Создание родственных связей
+    public void addRelationship(String personName, String relativeName, RelationshipType type) {
+        Human person = service.findMember(personName);
+        Human relative = service.findMember(relativeName);
+        if (person != null && relative != null) {
+            service.addRelationship(person, relative, type);
+            service.saveToFile("family_tree/model/utils/familyTree.ser");
+            view.displaySuccess("Отношения успешно установлены");
+        } else {
+            view.displayError("Один или оба человека отсутсвуют в семейном древе");
         }
     }
 }

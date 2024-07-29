@@ -62,7 +62,24 @@ public class FamilyTree<T extends Node<T>> implements Serializable, Iterable<T>,
     // Загрузка дерева из файла
      public static <T extends Node<T>> FamilyTree<T> loadFromFile(String filename) {
         FileHandler fileHandler = new FileHandler();
-        return (FamilyTree<T>) fileHandler.readFromFile(filename);
+        FamilyTree<T> familyTree = (FamilyTree<T>) fileHandler.readFromFile(filename);
+        familyTree.initFileHandler();
+        return familyTree;
+    }
+
+    private void initFileHandler() {
+        fileHandler = new FileHandler();
+    }
+
+    // Создание родственных связей
+     public void addRelationship(T member, T relative, RelationshipType type) {
+        if (type == RelationshipType.PARENT) {
+            member.setParent(relative);
+            relative.addChild(member);
+        } else if (type == RelationshipType.CHILD) {
+            member.addChild(relative);
+            relative.setParent(member);
+        }
     }
 
     // Сортировка списка по имени
